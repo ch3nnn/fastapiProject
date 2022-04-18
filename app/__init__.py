@@ -12,8 +12,8 @@ from fastapi import FastAPI, Request
 from fastapi_sqlalchemy import DBSessionMiddleware  # middleware helper
 from starlette.responses import JSONResponse
 
-from app import passport
-from config import Config, config_dict
+from app import passport, websocket
+from config import config_dict
 
 
 # 工厂方法,根据不同的参数,创建不同环境下的app对象
@@ -28,6 +28,7 @@ def create_app(config_name):
     register_redis(app, settings)
     # 添加路由
     app.include_router(passport.router, prefix="/api")
+    app.include_router(websocket.router)  # websocket
 
     app.config = settings
 
